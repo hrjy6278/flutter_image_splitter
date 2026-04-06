@@ -120,7 +120,8 @@ class ImageSplitter {
 
   /// Per-source ETag/Last-Modified cache. Lets repeated [split] calls for
   /// the same URL skip re-downloading when the server responds 304.
-  final Map<String, _ConditionalCache> _etagCache = <String, _ConditionalCache>{};
+  final Map<String, _ConditionalCache> _etagCache =
+      <String, _ConditionalCache>{};
 
   bool _disposed = false;
 
@@ -142,10 +143,7 @@ class ImageSplitter {
   /// - `FILE_NOT_FOUND` — local source path does not exist
   /// - `DECODE_ERROR` — unsupported format or corrupt image
   /// - `SPLIT_ERROR` — disk full, IO failure, or other split-time error
-  Future<SplitOutcome> split(
-    String source, {
-    int? maxChunkHeight,
-  }) async {
+  Future<SplitOutcome> split(String source, {int? maxChunkHeight}) async {
     _assertNotDisposed();
     if (source.trim().isEmpty) {
       throw PlatformException(
@@ -156,7 +154,8 @@ class ImageSplitter {
 
     // Validate sources we recognise. Anything else falls through to the
     // native layer where it will fail with a clearer error.
-    final isHttp = source.startsWith('http://') || source.startsWith('https://');
+    final isHttp =
+        source.startsWith('http://') || source.startsWith('https://');
     final isFile = source.startsWith('file://') || source.startsWith('/');
     if (!isHttp && !isFile) {
       throw PlatformException(
@@ -166,9 +165,10 @@ class ImageSplitter {
       );
     }
     if (isFile) {
-      final path = source.startsWith('file://')
-          ? Uri.parse(source).toFilePath()
-          : source;
+      final path =
+          source.startsWith('file://')
+              ? Uri.parse(source).toFilePath()
+              : source;
       if (!File(path).existsSync()) {
         throw PlatformException(
           code: 'FILE_NOT_FOUND',

@@ -23,7 +23,6 @@ import 'package:pigeon/pigeon.dart';
     swiftOptions: SwiftOptions(),
   ),
 )
-
 /// Parameters for a split request.
 ///
 /// [source] supports the following forms:

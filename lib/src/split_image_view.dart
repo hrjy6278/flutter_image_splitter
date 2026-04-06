@@ -72,7 +72,8 @@ class SplitImageView extends StatelessWidget {
 
   /// Optional builder for the per-chunk error state. Called with the
   /// failing chunk index and the error.
-  final Widget Function(BuildContext, int chunkIndex, Object error)? errorBuilder;
+  final Widget Function(BuildContext, int chunkIndex, Object error)?
+  errorBuilder;
 
   final bool _scrollable;
 

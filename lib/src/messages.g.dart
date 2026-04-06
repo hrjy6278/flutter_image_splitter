@@ -10,9 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
 Object? _extractReplyValueOrThrow(
-    List<Object?>? replyList,
-    String channelName, {
-    required bool isNullValid,
+  List<Object?>? replyList,
+  String channelName, {
+  required bool isNullValid,
 }) {
   if (replyList == null) {
     throw PlatformException(
@@ -46,8 +46,9 @@ bool _deepEquals(Object? a, Object? b) {
   }
   if (a is List && b is List) {
     return a.length == b.length &&
-        a.indexed
-            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+        a.indexed.every(
+          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
+        );
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) {
@@ -96,7 +97,6 @@ int _deepHash(Object? value) {
   return value.hashCode;
 }
 
-
 /// Parameters for a split request.
 ///
 /// [source] supports the following forms:
@@ -124,16 +124,12 @@ class SplitRequest {
   String? cachedLastModified;
 
   List<Object?> _toList() {
-    return <Object?>[
-      source,
-      maxChunkHeight,
-      cachedEtag,
-      cachedLastModified,
-    ];
+    return <Object?>[source, maxChunkHeight, cachedEtag, cachedLastModified];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static SplitRequest decode(Object result) {
     result as List<Object?>;
@@ -154,7 +150,10 @@ class SplitRequest {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(source, other.source) && _deepEquals(maxChunkHeight, other.maxChunkHeight) && _deepEquals(cachedEtag, other.cachedEtag) && _deepEquals(cachedLastModified, other.cachedLastModified);
+    return _deepEquals(source, other.source) &&
+        _deepEquals(maxChunkHeight, other.maxChunkHeight) &&
+        _deepEquals(cachedEtag, other.cachedEtag) &&
+        _deepEquals(cachedLastModified, other.cachedLastModified);
   }
 
   @override
@@ -204,7 +203,8 @@ class SplitResult {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static SplitResult decode(Object result) {
     result as List<Object?>;
@@ -227,14 +227,18 @@ class SplitResult {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(paths, other.paths) && _deepEquals(fromCache, other.fromCache) && _deepEquals(etag, other.etag) && _deepEquals(lastModified, other.lastModified) && _deepEquals(chunkHeights, other.chunkHeights) && _deepEquals(imageWidth, other.imageWidth);
+    return _deepEquals(paths, other.paths) &&
+        _deepEquals(fromCache, other.fromCache) &&
+        _deepEquals(etag, other.etag) &&
+        _deepEquals(lastModified, other.lastModified) &&
+        _deepEquals(chunkHeights, other.chunkHeights) &&
+        _deepEquals(imageWidth, other.imageWidth);
   }
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
 }
-
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -243,10 +247,10 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is SplitRequest) {
+    } else if (value is SplitRequest) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
-    }    else if (value is SplitResult) {
+    } else if (value is SplitResult) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
     } else {
@@ -289,9 +293,12 @@ class ImageSplitterApi {
   /// Constructor for [ImageSplitterApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  ImageSplitterApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  ImageSplitterApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) : pigeonVar_binaryMessenger = binaryMessenger,
+       pigeonVar_messageChannelSuffix =
+           messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -308,27 +315,30 @@ class ImageSplitterApi {
   /// - `DECODE_ERROR`: Unsupported format or corrupt image
   /// - `SPLIT_ERROR`: Error during the split (disk full, IO failure, etc.)
   Future<SplitResult> splitImage(SplitRequest request) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.image_splitter.ImageSplitterApi.splitImage$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.image_splitter.ImageSplitterApi.splitImage$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[request]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[request],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as SplitResult;
   }
 
   /// Deletes all cached split images. Returns the number of files deleted.
   Future<int> clearCache() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.image_splitter.ImageSplitterApi.clearCache$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.image_splitter.ImageSplitterApi.clearCache$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -338,11 +348,10 @@ class ImageSplitterApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as int;
   }
 
@@ -355,7 +364,8 @@ class ImageSplitterApi {
   /// the default for [SplitRequest.maxChunkHeight] when the caller does not
   /// supply one.
   Future<int> getMaxTextureSize() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.image_splitter.ImageSplitterApi.getMaxTextureSize$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.image_splitter.ImageSplitterApi.getMaxTextureSize$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -365,11 +375,10 @@ class ImageSplitterApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as int;
   }
 }
