@@ -4,9 +4,9 @@ description: >
   using platform-native bitmap decoders. Solves Flutter's ~8192px texture height
   limit that causes image distortion.
 version: 0.2.0
-homepage: https://github.com/hrjy6278/image_splitter
-repository: https://github.com/hrjy6278/image_splitter
-issue_tracker: https://github.com/hrjy6278/image_splitter/issues
+homepage: https://github.com/hrjy6278/flutter_image_splitter
+repository: https://github.com/hrjy6278/flutter_image_splitter
+issue_tracker: https://github.com/hrjy6278/flutter_image_splitter/issues
 
 environment:
   sdk: ^3.7.0

@@ -11,7 +11,7 @@ A Flutter plugin that splits tall/long images into chunks below Flutter's
 ~8192px GPU texture limit. Uses CGImageSource on iOS for region-based
 decoding without loading the full image into memory.
                        DESC
-  s.homepage         = 'https://github.com/hrjy6278/image_splitter'
+  s.homepage         = 'https://github.com/hrjy6278/flutter_image_splitter'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'hrjy6278' => 'noreply@hrjy6278.dev' }
   s.source           = { :path => '.' }
