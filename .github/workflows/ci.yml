@@ -28,21 +28,20 @@ jobs:
         working-directory: example
         run: flutter pub get
 
-      - name: Verify Pigeon output is up to date
+      - name: Regenerate Pigeon and check format
+        # Combined check: Pigeon outputs are not in dart-format style by
+        # default, so we regenerate them, then run dart format on everything,
+        # then check git diff. A clean diff means BOTH Pigeon is up to date
+        # AND all files match dart format. Either kind of drift fails the
+        # build with a clear actionable diff.
         run: |
           dart run pigeon --input pigeons/messages.dart
-          if ! git diff --quiet -- lib/src/messages.g.dart \
-                                   ios/Classes/Messages.g.swift \
-                                   android/src/main/kotlin/com/tommyfuture/image_splitter/Messages.g.kt; then
-            echo "::error::Pigeon-generated files are out of date. Run 'dart run pigeon --input pigeons/messages.dart' locally and commit the changes."
-            git --no-pager diff -- lib/src/messages.g.dart \
-                                   ios/Classes/Messages.g.swift \
-                                   android/src/main/kotlin/com/tommyfuture/image_splitter/Messages.g.kt
+          dart format lib test pigeons
+          if ! git diff --quiet; then
+            echo "::error::Either Pigeon output or dart format is out of date. Run 'dart run pigeon --input pigeons/messages.dart && dart format lib test pigeons' locally and commit the changes."
+            git --no-pager diff
             exit 1
           fi
-
-      - name: dart format check
-        run: dart format --output=none --set-exit-if-changed lib test pigeons
 
       - name: dart analyze
         run: dart analyze --fatal-infos
