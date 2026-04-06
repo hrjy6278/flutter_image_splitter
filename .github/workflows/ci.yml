@@ -34,12 +34,22 @@ jobs:
         # then check git diff. A clean diff means BOTH Pigeon is up to date
         # AND all files match dart format. Either kind of drift fails the
         # build with a clear actionable diff.
+        #
+        # We scope the diff check to source files (lib, test, pigeons,
+        # ios/Classes, android/src) rather than the whole tree. This avoids
+        # false positives from environment-dependent files like
+        # example/pubspec.lock, which gets bumped automatically whenever the
+        # parent package version changes.
         run: |
           dart run pigeon --input pigeons/messages.dart
           dart format lib test pigeons
-          if ! git diff --quiet; then
+          if ! git diff --quiet -- lib test pigeons \
+                                    ios/Classes/Messages.g.swift \
+                                    android/src/main/kotlin/io/github/hrjy6278/image_splitter/Messages.g.kt; then
             echo "::error::Either Pigeon output or dart format is out of date. Run 'dart run pigeon --input pigeons/messages.dart && dart format lib test pigeons' locally and commit the changes."
-            git --no-pager diff
+            git --no-pager diff -- lib test pigeons \
+                                    ios/Classes/Messages.g.swift \
+                                    android/src/main/kotlin/io/github/hrjy6278/image_splitter/Messages.g.kt
             exit 1
           fi
 
