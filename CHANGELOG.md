@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Shortened `pubspec.yaml` description to fit pub.dev's 180-character limit (was 189 chars). Restores the 10 pub points lost on the "Provide a valid pubspec.yaml" check. No code changes.
+
 ## 0.2.0
 
 ### Breaking changes
