@@ -1,0 +1,53 @@
+name: Publish to pub.dev
+
+# Triggers on a tag like v0.2.0. The tag must match the pubspec.yaml version
+# exactly — the workflow fails if they disagree, so accidental publishes
+# are caught before any bytes ship.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+# Required for OIDC auth to pub.dev. The package must be configured for
+# automated publishing under "Admin → Automated publishing" on pub.dev.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to pub.dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify tag matches pubspec version
+        run: |
+          TAG="${GITHUB_REF#refs/tags/v}"
+          PUBSPEC_VERSION=$(grep '^version: ' pubspec.yaml | awk '{print $2}')
+          if [ "$TAG" != "$PUBSPEC_VERSION" ]; then
+            echo "::error::Tag $TAG does not match pubspec.yaml version $PUBSPEC_VERSION"
+            exit 1
+          fi
+          echo "Publishing version $PUBSPEC_VERSION"
+
+      - name: dart analyze
+        run: dart analyze --fatal-infos
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Publish
+        # The dart-lang/setup-dart action handles OIDC token exchange and
+        # writes the credentials file. We use uses: dart-lang/setup-dart
+        # implicitly via flutter-action — pub.dev's automated publishing
+        # works as long as the workflow has id-token: write permission.
+        run: dart pub publish --force
