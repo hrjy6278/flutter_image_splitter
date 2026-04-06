@@ -1,4 +1,4 @@
-name: image_splitter
+name: flutter_image_splitter
 description: >
   A Flutter plugin that splits tall/long images into memory-efficient chunks
   using platform-native bitmap decoders. Solves Flutter's ~8192px texture height
@@ -15,6 +15,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Required by Pigeon-generated code (lib/src/messages.g.dart) which
+  # uses @immutable, @protected, @visibleForTesting annotations.
+  meta: ^1.15.0
 
 # Note: plugin_platform_interface is not needed — Pigeon handles all
 # platform communication via generated type-safe code.

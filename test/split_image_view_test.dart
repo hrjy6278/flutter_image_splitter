@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_splitter/image_splitter.dart';
+import 'package:flutter_image_splitter/flutter_image_splitter.dart';
 
 // =============================================================================
 // SplitImageView — widget tests

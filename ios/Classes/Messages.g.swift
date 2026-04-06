@@ -397,7 +397,7 @@ class ImageSplitterApiSetup {
     /// - `FILE_NOT_FOUND`: Local file path does not exist
     /// - `DECODE_ERROR`: Unsupported format or corrupt image
     /// - `SPLIT_ERROR`: Error during the split (disk full, IO failure, etc.)
-    let splitImageChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.image_splitter.ImageSplitterApi.splitImage\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let splitImageChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.splitImage\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       splitImageChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -415,7 +415,7 @@ class ImageSplitterApiSetup {
       splitImageChannel.setMessageHandler(nil)
     }
     /// Deletes all cached split images. Returns the number of files deleted.
-    let clearCacheChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.image_splitter.ImageSplitterApi.clearCache\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let clearCacheChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.clearCache\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       clearCacheChannel.setMessageHandler { _, reply in
         api.clearCache { result in
@@ -438,7 +438,7 @@ class ImageSplitterApiSetup {
     /// Returns a safe fallback (4096) if the query fails. Use this value as
     /// the default for [SplitRequest.maxChunkHeight] when the caller does not
     /// supply one.
-    let getMaxTextureSizeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.image_splitter.ImageSplitterApi.getMaxTextureSize\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getMaxTextureSizeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.getMaxTextureSize\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getMaxTextureSizeChannel.setMessageHandler { _, reply in
         api.getMaxTextureSize { result in

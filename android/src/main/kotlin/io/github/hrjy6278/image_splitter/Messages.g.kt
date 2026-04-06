@@ -410,7 +410,7 @@ interface ImageSplitterApi {
     fun setUp(binaryMessenger: BinaryMessenger, api: ImageSplitterApi?, messageChannelSuffix: String = "") {
       val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.image_splitter.ImageSplitterApi.splitImage$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.splitImage$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -430,7 +430,7 @@ interface ImageSplitterApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.image_splitter.ImageSplitterApi.clearCache$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.clearCache$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             api.clearCache{ result: Result<Long> ->
@@ -448,7 +448,7 @@ interface ImageSplitterApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.image_splitter.ImageSplitterApi.getMaxTextureSize$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.getMaxTextureSize$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             api.getMaxTextureSize{ result: Result<Long> ->

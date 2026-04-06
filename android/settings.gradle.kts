@@ -1,1 +1,1 @@
-rootProject.name = 'image_splitter'
+rootProject.name = 'flutter_image_splitter'

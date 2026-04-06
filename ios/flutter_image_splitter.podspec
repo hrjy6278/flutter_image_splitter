@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint image_splitter.podspec` to validate before publishing.
+# Run `pod lib lint flutter_image_splitter.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'image_splitter'
+  s.name             = 'flutter_image_splitter'
   s.version          = '0.2.0'
   s.summary          = 'Splits tall images into memory-efficient chunks using native bitmap decoders.'
   s.description      = <<-DESC

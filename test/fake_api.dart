@@ -1,4 +1,4 @@
-import 'package:image_splitter/src/messages.g.dart';
+import 'package:flutter_image_splitter/src/messages.g.dart';
 
 // =============================================================================
 // FakeImageSplitterApi — test double for the Pigeon-generated host API

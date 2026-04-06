@@ -41,7 +41,7 @@ public class ImageSplitterPlugin: NSObject, FlutterPlugin, ImageSplitterApi {
     private let splitter = ImageSplitter()
 
     private let queue = DispatchQueue(
-        label: "com.tommyfuture.image_splitter.work",
+        label: "io.github.hrjy6278.image_splitter.work",
         qos: .userInitiated,
         attributes: .concurrent
     )
@@ -51,7 +51,7 @@ public class ImageSplitterPlugin: NSObject, FlutterPlugin, ImageSplitterApi {
     // In-flight dedup. Concurrent callers for the same key share the same
     // promise. Mutated only on [stateQueue] for thread safety.
     private var inFlight: [String: [(Result<SplitResult, Error>) -> Void]] = [:]
-    private let stateQueue = DispatchQueue(label: "com.tommyfuture.image_splitter.state")
+    private let stateQueue = DispatchQueue(label: "io.github.hrjy6278.image_splitter.state")
 
     // Cached Metal probe result. The value can never change at runtime.
     private var cachedMaxTextureSize: Int?

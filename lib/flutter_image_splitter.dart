@@ -8,7 +8,7 @@
 /// ## Quick start
 ///
 /// ```dart
-/// import 'package:image_splitter/image_splitter.dart';
+/// import 'package:flutter_image_splitter/flutter_image_splitter.dart';
 ///
 /// final splitter = ImageSplitter();
 /// final outcome = await splitter.split('https://example.com/tall-image.jpg');

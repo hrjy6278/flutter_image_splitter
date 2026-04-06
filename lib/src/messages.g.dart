@@ -316,7 +316,7 @@ class ImageSplitterApi {
   /// - `SPLIT_ERROR`: Error during the split (disk full, IO failure, etc.)
   Future<SplitResult> splitImage(SplitRequest request) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.image_splitter.ImageSplitterApi.splitImage$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.splitImage$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -338,7 +338,7 @@ class ImageSplitterApi {
   /// Deletes all cached split images. Returns the number of files deleted.
   Future<int> clearCache() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.image_splitter.ImageSplitterApi.clearCache$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.clearCache$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -365,7 +365,7 @@ class ImageSplitterApi {
   /// supply one.
   Future<int> getMaxTextureSize() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.image_splitter.ImageSplitterApi.getMaxTextureSize$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.flutter_image_splitter.ImageSplitterApi.getMaxTextureSize$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,

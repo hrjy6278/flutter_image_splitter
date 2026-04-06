@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_splitter/image_splitter.dart';
-import 'package:image_splitter/src/messages.g.dart';
+import 'package:flutter_image_splitter/flutter_image_splitter.dart';
+import 'package:flutter_image_splitter/src/messages.g.dart';
 
 import 'fake_api.dart';
 

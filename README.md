@@ -1,4 +1,4 @@
-# image_splitter
+# flutter_image_splitter
 
 A Flutter plugin that splits tall images into memory-efficient chunks using platform-native bitmap decoders.
 
@@ -21,13 +21,13 @@ This plugin decodes and splits images **natively** (bypassing Flutter's texture 
 
 ```yaml
 dependencies:
-  image_splitter: ^0.2.0
+  flutter_image_splitter: ^0.2.0
 ```
 
 ## Quick start
 
 ```dart
-import 'package:image_splitter/image_splitter.dart';
+import 'package:flutter_image_splitter/flutter_image_splitter.dart';
 
 final splitter = ImageSplitter();
 

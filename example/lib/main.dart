@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_splitter/image_splitter.dart';
+import 'package:flutter_image_splitter/flutter_image_splitter.dart';
 
 void main() {
   runApp(const MyApp());
