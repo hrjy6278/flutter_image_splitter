@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_splitter/flutter_image_splitter.dart';
+
+const _assetPath = 'assets/test_images/tall_1000x12000.jpg';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +16,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Image Splitter Example')),
-        body: const ImageSplitDemo(),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Image Splitter — Before / After'),
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Before'),
+                Tab(text: 'After'),
+              ],
+            ),
+          ),
+          body: const ImageSplitDemo(),
+        ),
       ),
     );
   }
@@ -29,78 +44,113 @@ class ImageSplitDemo extends StatefulWidget {
 
 class _ImageSplitDemoState extends State<ImageSplitDemo> {
   final _splitter = ImageSplitter();
-  final _urlController = TextEditingController();
 
   SplitOutcome? _outcome;
-  bool _loading = false;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
 
   @override
   void dispose() {
     _splitter.dispose();
-    _urlController.dispose();
     super.dispose();
   }
 
-  Future<void> _split() async {
-    final url = _urlController.text.trim();
-    if (url.isEmpty) return;
-
-    setState(() {
-      _loading = true;
-      _error = null;
-      _outcome = null;
-    });
-
+  Future<void> _load() async {
     try {
-      final outcome = await _splitter.split(url);
-      setState(() {
-        _outcome = outcome;
-        _loading = false;
-      });
+      // Stage the bundled asset to a temp file so the native splitter can
+      // read it as a regular file path.
+      final bytes = await rootBundle.load(_assetPath);
+      final tempFile = File(
+        '${Directory.systemTemp.path}/example_${DateTime.now().microsecondsSinceEpoch}.jpg',
+      );
+      await tempFile.writeAsBytes(bytes.buffer.asUint8List());
+
+      final outcome = await _splitter.split(tempFile.path);
+      if (!mounted) return;
+      setState(() => _outcome = outcome);
     } on PlatformException catch (e) {
-      setState(() {
-        _error = '${e.code}: ${e.message}';
-        _loading = false;
-      });
+      if (!mounted) return;
+      setState(() => _error = '${e.code}: ${e.message}');
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _error = e.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    if (_error != null) {
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(_error!, style: const TextStyle(color: Colors.red)),
+      );
+    }
+
+    return TabBarView(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _urlController,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter image URL',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton(
-                onPressed: _loading ? null : _split,
-                child: const Text('Split'),
-              ),
-            ],
+        _BeforeTab(),
+        _AfterTab(outcome: _outcome),
+      ],
+    );
+  }
+}
+
+class _BeforeTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          color: Colors.red.shade50,
+          child: const Text(
+            'Image.asset (raw) — distorted by GPU texture limit',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
-        if (_loading) const CircularProgressIndicator.adaptive(),
-        if (_error != null)
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(_error!, style: const TextStyle(color: Colors.red)),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Image.asset(_assetPath),
           ),
-        if (_outcome != null)
-          Expanded(
-            child: SplitImageView.scrollable(outcome: _outcome!),
+        ),
+      ],
+    );
+  }
+}
+
+class _AfterTab extends StatelessWidget {
+  const _AfterTab({required this.outcome});
+
+  final SplitOutcome? outcome;
+
+  @override
+  Widget build(BuildContext context) {
+    if (outcome == null) {
+      return const Center(child: CircularProgressIndicator.adaptive());
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          color: Colors.green.shade50,
+          child: Text(
+            'SplitImageView (chunked) — ${outcome!.chunkHeights.length} chunks, '
+            'full ${outcome!.imageWidth}×${outcome!.totalHeight}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
+        ),
+        Expanded(
+          child: SplitImageView.scrollable(outcome: outcome!),
+        ),
       ],
     );
   }

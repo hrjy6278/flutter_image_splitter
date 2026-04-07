@@ -8,6 +8,18 @@ Flutter's GPU rendering engine (Skia/Impeller) has a maximum texture height limi
 
 **No Dart-side workaround exists** (not `BoxFit`, `cacheHeight`, or any image package). The limitation is at the GPU texture level.
 
+## Before / After
+
+A 1000×14284 landscape rendered with raw `Image.asset` (downsampled by the GPU texture limit) versus `SplitImageView` (chunked at full resolution). Run `example/` to reproduce.
+
+**Before — `Image.asset`**
+
+<img src="screenshots/before.png" alt="before" width="320" />
+
+**After — `SplitImageView`**
+
+<img src="screenshots/after.png" alt="after" width="320" />
+
 ## Solution
 
 This plugin decodes and splits images **natively** (bypassing Flutter's texture limit), saves each chunk as a JPEG file, and exposes a companion widget that renders the chunks as if they were a single image.
